@@ -175,10 +175,6 @@ svg { display: block; }
 .leaf { position: absolute; pointer-events: none; z-index: 0; }
 .leaf svg { width: 100%; height: auto; overflow: visible; }
 .twig svg { display: block; width: auto; height: auto; }
-.leaf .sway { animation: sway 9s ease-in-out infinite alternate; }
-[data-twig="tr"] .sway { animation-delay: -3s; }
-[data-twig="bl"] .sway { animation-delay: -5s; }
-@keyframes sway { to { transform: rotate(1.6deg); } }
 
 .card-inner { position: relative; z-index: 1; padding: clamp(64px, 18vw, 92px) 30px 40px; text-align: center; }
 
@@ -281,6 +277,7 @@ svg { display: block; }
 .block h3 { margin: 0 0 6px; font: 500 .68rem var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--olive-600); }
 .block p { margin: 0; font: 500 1.12rem/1.45 var(--serif); }
 .block p.muted { font: 400 .98rem/1.45 var(--serif); color: var(--ink-soft); margin-top: 4px; }
+.block p.when-line { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
 
 .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
 .btn { flex: 1; min-width: 130px; text-align: center; text-decoration: none; padding: 13px 16px; border-radius: 99px; border: 1px solid var(--olive-600); background: transparent; color: var(--olive-700); font: 500 .7rem var(--sans); letter-spacing: .2em; text-transform: uppercase; transition: background .2s, color .2s, transform .2s; }

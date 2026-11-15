@@ -157,7 +157,7 @@
       const L = C.local;
       return head("Cerimônia & recepção", "Como chegar") + `
         <div class="block"><h3>Local</h3><p>${esc(L.nome)}</p>${L.endereco ? `<p class="muted">${esc(L.endereco)}</p>` : ""}${L.observacao ? `<p class="muted">${esc(L.observacao)}</p>` : ""}</div>
-        <div class="block"><h3>${C.mostrarHorario ? "Data e horário" : "Data"}</h3><p>${esc($("#when-date").textContent)}</p><p class="muted">${esc($("#when-time").textContent.replace(/\s+/g, " "))}</p></div>
+        <div class="block"><h3>${C.mostrarHorario ? "Data e horário" : "Data"}</h3><p>${esc($("#when-date").textContent)}</p><p class="muted when-line">${esc($("#when-time").textContent.replace(/\s+/g, " "))}</p></div>
         ${L.mapsUrl || L.wazeUrl ? `<div class="btn-row">
           ${L.mapsUrl ? `<a class="btn solid" href="${esc(L.mapsUrl)}" target="_blank" rel="noopener">Google Maps</a>` : ""}
           ${L.wazeUrl ? `<a class="btn" href="${esc(L.wazeUrl)}" target="_blank" rel="noopener">Waze</a>` : ""}
