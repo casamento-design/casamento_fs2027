@@ -37,6 +37,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 button { font: inherit; color: inherit; cursor: pointer; }
+button, a, label, .seg span { -webkit-tap-highlight-color: transparent; } /* sem o flash azul ao tocar no celular */
 [hidden] { display: none !important; }
 svg { display: block; }
 
