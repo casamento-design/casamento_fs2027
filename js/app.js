@@ -195,6 +195,7 @@
 
   function openRSVP() {
     state = { limite: C.maxPessoas, pessoas: [{ nome: "", status: "Vai", crianca: false }], telefone: "", recado: "" };
+    openSheet(""); // abre o painel; o formulário é desenhado dentro dele
     renderForm();
   }
 
