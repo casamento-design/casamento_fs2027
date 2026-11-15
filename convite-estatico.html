@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Convite estático — gera o convite-casamento.png</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Versão para imagem (formato 9:16, ex.: 540x960 a 2x = 1080x1920). Reaproveita o visual do convite. */
+    html, body { height: 960px; width: 540px; overflow: hidden; margin: 0; }
+    .card { max-width: none; width: 540px; height: 960px; min-height: 0; border-radius: 0; box-shadow: none; display: flex; flex-direction: column; justify-content: center; }
+    .card-inner { padding: 70px 44px 70px; }
+    .names span { font-size: 4.7rem; }
+    .names em { font-size: 2.1rem; }
+    .phrase { font-size: 1.25rem; max-width: 30ch; margin-top: 18px; }
+    .ornament { margin: 22px auto 18px; }
+    .when-date { font-size: 1.75rem; }
+    .when-time { font-size: 1rem; margin-top: 10px; }
+    .local { margin: 22px auto 0; padding: 18px 20px 16px; max-width: 400px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.55); }
+    .local small { display: block; font: 500 .66rem var(--sans); letter-spacing: .38em; text-transform: uppercase; color: var(--olive-600); }
+    .local b { display: block; margin-top: 8px; font: 600 1.45rem/1.2 var(--serif); color: var(--olive-700); }
+    .local p { margin: 6px 0 0; font: 400 1rem/1.4 var(--sans); color: var(--ink); }
+    .verse { font-size: 1.1rem; margin-top: 22px; }
+    .soon { margin: 18px 0 0; font: 400 .64rem var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+    .foot { margin-top: 16px; }
+    .when-time b { font-weight: inherit; letter-spacing: inherit; text-transform: inherit; }
+    .twig { position: absolute; z-index: 0; pointer-events: none; }
+    .twig svg { display: block; overflow: visible; }
+  </style>
+</head>
+<body>
+<main>
+  <article class="card">
+    <div class="twig" id="twig-tl"></div><div class="twig" id="twig-tr"></div><div class="twig" id="twig-bl"></div>
+
+    <div class="card-inner">
+      <h1 class="names"><span id="noivo"></span><em>&amp;</em><span id="noiva"></span></h1>
+      <p class="phrase" id="phrase"></p>
+      <div class="ornament" aria-hidden="true"><i></i><svg viewBox="0 0 24 24"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9Zm0 9c3 0 6 1 9 3-3 2-6 3-9 0Zm0 0c-3 0-6 1-9 3 3 2 6 3 9 0Z"/></svg><i></i></div>
+      <div class="when"><p class="when-date" id="when-date"></p><p class="when-time" id="when-time"></p></div>
+      <div class="local"><small>Local</small><b id="local-nome"></b><p id="local-end"></p></div>
+      <p class="verse"><span id="verse"></span><small id="verse-ref"></small></p>
+      <p class="soon">Em breve enviaremos o convite para confirmação de presença</p>
+      <p class="foot">Com amor, <span id="foot-nomes"></span></p>
+    </div>
+  </article>
+</main>
+
+<script src="js/config.js"></script>
+<script>
+(() => {
+  "use strict";
+  const C = window.CONVITE;
+  const $ = (s) => document.querySelector(s);
+  function rng(seed) { // mulberry32
+    return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+
+  /* Ramo de oliveira, em versão limpa: talo fino, folhas estreitas e pontudas em verde-oliva
+     acinzentado, nervura central clara  */
+  function eucalipto(id, seed, len, pairs, bend) {
+    const r = rng(seed), f = (n) => n.toFixed(1);
+    const P0 = [0, 0], C1 = [len * 0.5, len * bend], P1 = [len, len * 0.08];
+    const pt = (t) => [(1 - t) ** 2 * P0[0] + 2 * (1 - t) * t * C1[0] + t * t * P1[0], (1 - t) ** 2 * P0[1] + 2 * (1 - t) * t * C1[1] + t * t * P1[1]];
+    const tan = (t) => Math.atan2(2 * (1 - t) * (C1[1] - P0[1]) + 2 * t * (P1[1] - C1[1]), 2 * (1 - t) * (C1[0] - P0[0]) + 2 * t * (P1[0] - C1[0]));
+    const deg = (a) => (a * 180) / Math.PI;
+
+    // folha de oliveira: lanceolada, ponta fina, levemente curvada; s = tamanho, a = direção em graus
+    const leaf = (x, y, a, s, tone) => `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(a)})">
+      <path d="M0 0 L${f(s * 0.2)} 0" stroke="#8a8a62" stroke-width="1" stroke-linecap="round"/>
+      <g transform="translate(${f(s * 0.18)} 0)">
+        <path d="M0 0 C${f(s * 0.3)} ${f(-s * 0.5)} ${f(s * 1.7)} ${f(-s * 0.46)} ${f(s * 2.6)} ${f(s * 0.1)} C${f(s * 1.7)} ${f(s * 0.4)} ${f(s * 0.3)} ${f(s * 0.46)} 0 0Z" fill="url(#${id}g${tone})"/>
+        <path d="M${f(s * 0.08)} 0 Q${f(s * 1.3)} ${f(-s * 0.04)} ${f(s * 2.45)} ${f(s * 0.09)}" fill="none" stroke="#f1f4e6" stroke-opacity=".5" stroke-width=".8" stroke-linecap="round"/>
+      </g></g>`;
+
+    // talo fino e que afina para a ponta
+    const N = 28, L = [], R = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, [x, y] = pt(t), a = tan(t), w = 2.1 * (1 - 0.7 * t) + 0.45;
+      L.push([x - Math.sin(a) * w, y + Math.cos(a) * w]); R.push([x + Math.sin(a) * w, y - Math.cos(a) * w]);
+    }
+    const stem = `<path d="M${L.map((p) => f(p[0]) + " " + f(p[1])).join(" L")} L${R.reverse().map((p) => f(p[0]) + " " + f(p[1])).join(" L")}Z" fill="url(#${id}s)"/>`;
+
+    // folhas em posições irregulares: ora par, ora folha solitária; tamanhos e ângulos variados
+    let leaves = "", t = 0.12, n = 0;
+    const gap = 22 / len; // espaço mínimo entre nós (evita sobreposição)
+    while (t < 0.92) {
+      const [x, y] = pt(t), a = deg(tan(t)), sz = 12.5 + 6.5 * (1 - t) + r() * 2.5;
+      const modo = r();
+      const lados = modo < 0.58 ? [-1, 1] : [modo < 0.79 ? -1 : 1];
+      lados.forEach((side, k) => {
+        const ang = a + side * (30 + r() * 28);
+        leaves += leaf(x, y, ang, sz * (k ? 0.8 + r() * 0.18 : 0.94 + r() * 0.12), (n + k) % 2);
+      });
+      n++; t += gap + r() * 0.035;
+    }
+    const [tx, ty] = pt(1);
+    leaves += leaf(tx, ty, deg(tan(1)) + (r() - 0.5) * 18, 11, 0);
+
+    const defs = `<defs>
+      <linearGradient id="${id}s" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${len}" y2="0"><stop offset="0" stop-color="#76694a"/><stop offset="1" stop-color="#8a8a62"/></linearGradient>
+      <linearGradient id="${id}g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b9b6d"/><stop offset="1" stop-color="#a8b48f"/></linearGradient>
+      <linearGradient id="${id}g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a8c60"/><stop offset="1" stop-color="#9aa883"/></linearGradient>
+      <filter id="${id}f" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx=".4" dy="1" stdDeviation=".9" flood-color="#2f3a1c" flood-opacity=".14"/></filter>
+    </defs>`;
+    const ox = 40, oy = len * 0.45;
+    return { ox, oy, svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-ox} ${-oy} ${len + 100} ${len * 0.95}" width="${len + 100}" height="${len * 0.95}" aria-hidden="true">${defs}<g filter="url(#${id}f)">${stem}${leaves}</g></svg>` };
+  }
+
+  // x/y = onde o talo nasce (px do cartão 540x960); ang = direção do ramo
+  const TWIGS = [
+    { id: "tl", seed: 8,  len: 215, bend: 0.1,   x: -12, y: 26,  ang: 66 },   // desce pela borda esquerda
+    { id: "tr", seed: 15, len: 105,  bend: -0.12, x: 470, y: -10, ang: 112 },  // pequeno, no topo direito
+    { id: "bl", seed: 21, len: 150, bend: 0.1,   x: -14, y: 952, ang: -17 },  // ao longo do rodapé esquerdo
+  ];
+  TWIGS.forEach((t) => {
+    const { ox, oy, svg } = eucalipto("e" + t.id, t.seed, t.len, 0, t.bend);
+    const el = document.getElementById("twig-" + t.id);
+    el.innerHTML = svg;
+    Object.assign(el.style, { left: (t.x - ox) + "px", top: (t.y - oy) + "px", transformOrigin: ox + "px " + oy + "px", transform: `rotate(${t.ang}deg)` });
+  });
+
+  const when = new Date(C.data);
+  const fmt = (o) => new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", ...o }).format(when);
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  $("#noivo").textContent = C.noivo; $("#noiva").textContent = C.noiva;
+  $("#foot-nomes").textContent = `${C.noivo} & ${C.noiva}`;
+  $("#phrase").textContent = C.frase;
+  $("#verse").textContent = C.versiculo; $("#verse-ref").textContent = C.versiculoRef || "";
+  $("#when-date").textContent = `${fmt({ day: "2-digit" })} de ${fmt({ month: "long" })} de ${fmt({ year: "numeric" })}`;
+  if (C.mostrarHorario) {
+    const [hh, mm] = fmt({ hour: "2-digit", minute: "2-digit", hour12: false }).split(":");
+    $("#when-time").innerHTML = `${cap(fmt({ weekday: "long" }))} &nbsp;|&nbsp; <b>${+hh}h${mm !== "00" ? mm : ""}</b>`;
+  } else {
+    $("#when-time").innerHTML = `${cap(fmt({ weekday: "long" }))} &nbsp;|&nbsp; Horário a confirmar`;
+  }
+  $("#local-nome").textContent = C.local.nome; $("#local-end").textContent = C.local.endereco;
+})();
+</script>
+</body>
+</html>

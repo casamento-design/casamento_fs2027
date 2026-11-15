@@ -174,14 +174,10 @@ svg { display: block; }
 
 .leaf { position: absolute; pointer-events: none; z-index: 0; }
 .leaf svg { width: 100%; height: auto; overflow: visible; }
-.leaf-tl { top: -30px; left: 30px; width: 210px; transform-origin: 0 0; transform: rotate(62deg); }
-.leaf-tr { top: -30px; left: calc(100% - 14px); width: 150px; transform-origin: 0 0; transform: rotate(118deg); }
-.leaf-bl { bottom: 14px; left: -48px; width: 200px; transform: scaleY(-1) rotate(10deg); transform-origin: 0 100%; opacity: .9; }
-.leaf-br { bottom: -10px; right: -50px; width: 230px; transform: scale(-1, -1) rotate(18deg); transform-origin: 100% 100%; opacity: .9; }
-.leaf .sway { animation: sway 9s ease-in-out infinite alternate; transform-origin: 0 0; }
-.leaf-tr .sway { animation-delay: -3s; }
-.leaf-bl .sway { animation-delay: -5s; }
-.leaf-br .sway { animation-delay: -1s; }
+.twig svg { display: block; width: auto; height: auto; }
+.leaf .sway { animation: sway 9s ease-in-out infinite alternate; }
+[data-twig="tr"] .sway { animation-delay: -3s; }
+[data-twig="bl"] .sway { animation-delay: -5s; }
 @keyframes sway { to { transform: rotate(1.6deg); } }
 
 .card-inner { position: relative; z-index: 1; padding: clamp(64px, 18vw, 92px) 30px 40px; text-align: center; }
@@ -205,7 +201,7 @@ svg { display: block; }
 .when { margin: 0; }
 .when-date { margin: 0; font: 500 clamp(1.05rem, 5.4vw, 1.5rem)/1.1 var(--serif); letter-spacing: .06em; text-transform: uppercase; color: var(--olive-700); white-space: nowrap; }
 .when-time { margin: 8px 0 0; font: 300 .95rem var(--sans); letter-spacing: .32em; text-transform: uppercase; color: var(--ink); }
-.when-time b { font-weight: 500; }
+.when-time b { font-weight: inherit; letter-spacing: inherit; text-transform: inherit; }
 
 .countdown { display: flex; justify-content: center; gap: 8px; margin: 24px 0 0; }
 .cd { min-width: 62px; padding: 10px 6px 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.55); }

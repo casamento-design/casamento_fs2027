@@ -6,16 +6,14 @@ window.CONVITE = {
   noiva: "Sthefany",
 
   // Data e hora da cerimônia (fuso de Brasília). Formato: AAAA-MM-DDTHH:MM:SS-03:00
-  // Horário ainda não definido: a contagem vai até 00h do dia. Quando definir, troque
-  // 00:00:00 pelo horário (ex.: 17:00:00) e ponha mostrarHorario: true.
-  data: "2027-01-09T00:00:00-03:00",
-  mostrarHorario: false,
+  data: "2027-01-09T18:30:00-03:00",
+  mostrarHorario: true,
   duracaoHoras: 5, // usado no "Adicionar à agenda" (só com mostrarHorario: true)
 
   frase:
     "Com alegria no coração e a bênção de Deus, convidamos você para testemunhar o nosso amém.",
-  versiculo: "“Acima de tudo, revistam-se do amor, que é o vínculo da perfeição.”",
-  versiculoRef: "Colossenses 3:14",
+  versiculo: "“Isso vem do SENHOR e é algo maravilhoso para nós.”",
+  versiculoRef: "Salmos 118:23",
 
   local: {
     nome: "Salão de festa Regina",

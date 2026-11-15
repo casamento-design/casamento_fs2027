@@ -13,57 +13,7 @@
   const API = (C.apiUrl || "").trim();
   const DEMO = !API;
 
-  /* ---------------------------------------------------------
-     Galhos de eucalipto (SVG gerado)
-     --------------------------------------------------------- */
-  function rng(seed) { // mulberry32
-    return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  }
-  const GREENS = ["#6f7f4f", "#7f8f5f", "#8f9e70", "#a3b087", "#b6c19d", "#5c6b3e"];
-
-  function branchSVG(seed, len = 300, pairs = 8, bend = -0.16) {
-    const r = rng(seed);
-    const P0 = [0, 0], C1 = [len * 0.5, len * bend], P1 = [len, len * 0.1];
-    const pt = (t) => [
-      (1 - t) ** 2 * P0[0] + 2 * (1 - t) * t * C1[0] + t * t * P1[0],
-      (1 - t) ** 2 * P0[1] + 2 * (1 - t) * t * C1[1] + t * t * P1[1],
-    ];
-    const tan = (t) => Math.atan2(2 * (1 - t) * (C1[1] - P0[1]) + 2 * t * (P1[1] - C1[1]), 2 * (1 - t) * (C1[0] - P0[0]) + 2 * t * (P1[0] - C1[0]));
-    let leaves = "";
-    const leaf = (x, y, deg, s) => {
-      const col = GREENS[Math.floor(r() * GREENS.length)];
-      return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${deg.toFixed(1)})">
-        <ellipse cx="${(s * 0.95).toFixed(1)}" cy="0" rx="${(s * 0.95).toFixed(1)}" ry="${(s * 0.74).toFixed(1)}" fill="${col}" opacity=".93"/>
-        <path d="M0 0 L${(s * 1.7).toFixed(1)} 0" stroke="#fff" stroke-opacity=".28" stroke-width=".9" fill="none"/></g>`;
-    };
-    for (let i = 1; i <= pairs; i++) {
-      const t = i / pairs, [x, y] = pt(t), a = tan(t);
-      const s = 25 * (1 - 0.5 * t) + r() * 7;
-      for (const side of [-1, 1]) {
-        if (i === pairs && side === 1) continue;
-        const ang = (i === pairs ? 0 : side * (52 + r() * 28)) + (a * 180) / Math.PI;
-        leaves += leaf(x, y, ang, i === pairs ? s * 1.1 : s * (0.85 + r() * 0.3));
-      }
-    }
-    const stem = `M0 0 Q${C1[0]} ${C1[1]} ${P1[0]} ${P1[1]}`;
-    return `<svg viewBox="-30 -${len * 0.35} ${len + 80} ${len * 0.8}" aria-hidden="true"><g class="sway">
-      <path d="${stem}" stroke="#5c6b3e" stroke-width="2.2" fill="none" stroke-linecap="round"/>${leaves}</g></svg>`;
-  }
-
-  const BRANCHES = { tl: [3, 300, 9, 0.16], tr: [7, 250, 8, 0.2], bl: [11, 230, 7, 0.14], br: [5, 260, 8, 0.18] };
-  $$("[data-branch]").forEach((el) => { const [s, l, p, b] = BRANCHES[el.dataset.branch]; el.innerHTML = branchSVG(s, l, p, b); });
-
-  // fundo do envelope
-  const envBg = $(".leaves-bg");
-  [
-    { s: 21, l: 300, p: 9, css: "top:-30px;left:-60px;width:330px;transform:rotate(30deg)" },
-    { s: 22, l: 260, p: 8, css: "bottom:-40px;right:-70px;width:300px;transform:rotate(210deg)" },
-    { s: 23, l: 220, p: 7, css: "top:8%;right:-80px;width:230px;transform:scaleX(-1) rotate(20deg)" },
-    { s: 24, l: 220, p: 7, css: "bottom:6%;left:-90px;width:240px;transform:rotate(-24deg)" },
-  ].forEach((b) => {
-    const d = document.createElement("div"); d.className = "b"; d.style.cssText = b.css;
-    d.innerHTML = branchSVG(b.s, b.l, b.p, 0.16); d.querySelector("svg").style.width = "100%"; envBg.append(d);
-  });
+  // Os ramos de oliveira (cartão e envelope) são desenhados em js/ramos.js
 
   /* ---------------------------------------------------------
      Textos do convite (a partir do config.js)
