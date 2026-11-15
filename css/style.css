@@ -277,7 +277,7 @@ svg { display: block; }
 .block h3 { margin: 0 0 6px; font: 500 .68rem var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--olive-600); }
 .block p { margin: 0; font: 500 1.12rem/1.45 var(--serif); }
 .block p.muted { font: 400 .98rem/1.45 var(--serif); color: var(--ink-soft); margin-top: 4px; }
-.block p.when-line { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.block p.when-line { font-family: "EB Garamond", var(--serif); font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; } /* números todos do mesmo tamanho */
 
 .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
 .btn { flex: 1; min-width: 130px; text-align: center; text-decoration: none; padding: 13px 16px; border-radius: 99px; border: 1px solid var(--olive-600); background: transparent; color: var(--olive-700); font: 500 .7rem var(--sans); letter-spacing: .2em; text-transform: uppercase; transition: background .2s, color .2s, transform .2s; }
